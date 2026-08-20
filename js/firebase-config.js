@@ -8,20 +8,21 @@
 //    verdiene under.
 // =============================================================================
 
-export const firebaseConfig = {
-  apiKey: "FYLL_INN_API_KEY",
-  authDomain: "FYLL_INN.firebaseapp.com",
-  projectId: "FYLL_INN",
-  storageBucket: "FYLL_INN.appspot.com",
-  messagingSenderId: "FYLL_INN",
-  appId: "FYLL_INN",
-};
+ export const firebaseConfig = {
+    apiKey: "AIzaSyBvByyFNtxRA686GSTHVEcC5ADVKTIExDY",
+    authDomain: "treningslogger.firebaseapp.com",
+    projectId: "treningslogger",
+    storageBucket: "treningslogger.firebasestorage.app",
+    messagingSenderId: "589505064971",
+    appId: "1:589505064971:web:1719bc39b3413f8c29570e",
+  };
 
-// De to godkjente e-postadressene (Google-kontoene til deg og sønnen din).
-// Dette er en EKSTRA sperre i selve appen (i tillegg til Firestore-reglene i
-// firestore.rules) - så uvedkommende ikke kommer inn selv om noen skulle
-// finne nettadressen.
+// De godkjente e-postadressene (Google-kontoene til deg, sønnen din, osv.).
+// Dette er en EKSTRA sperre i selve appen (i tillegg til Firestore-sikkerhets-
+// reglene i Firebase-konsollen) - så uvedkommende ikke kommer inn selv om
+// noen skulle finne nettadressen.
 export const ALLOWED_EMAILS = [
-  "eksempel.far@gmail.com",
-  "eksempel.sonn@gmail.com",
+  "aleksandernyland@gmail.com",
+  "fredrik.d.nyland@gmail.com",
+  "madeleinedaleng@gmail.com",
 ];
