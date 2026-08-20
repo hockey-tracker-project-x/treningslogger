@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Eksport - Treningslogger</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0d1b2a" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" href="icons/favicon-32.png" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="eksport">
+  <div class="app-shell">
+    <div id="topbar"></div>
+
+    <div class="section-title">
+      <h2 style="text-transform:none;font-size:1.2rem;color:var(--text-primary);">Eksporter til Excel</h2>
+    </div>
+
+    <div class="card">
+      <h2>Periode (valgfritt)</h2>
+      <label>Fra dato</label>
+      <input type="date" id="from-date" />
+      <label>Til dato</label>
+      <input type="date" id="to-date" />
+      <p class="muted" style="font-size:0.78rem;">La stå tomt for å eksportere alt.</p>
+    </div>
+
+    <div class="card">
+      <h2>Innhold i eksporten</h2>
+      <p class="secondary-text" style="font-size:0.85rem;">
+        Filen inneholder tre faner: <strong>Rådata</strong> (hver registrerte kategori i hver økt),
+        <strong>Sammendrag - kategori</strong> (totaltimer per kategori) og
+        <strong>Sammendrag - per måned</strong> (fin for å vise utvikling over tid, f.eks. til sponsorer).
+      </p>
+      <button type="button" id="export-btn" class="btn btn-primary">Last ned Excel-fil</button>
+    </div>
+  </div>
+
+  <!-- SheetJS - lastes klassisk (ikke som modul) slik at window.XLSX finnes før modulen under kjører -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <script type="module">
+    import { requireAuth } from "./js/auth.js";
+    import { renderTopbar, renderBottomNav, showToast } from "./js/nav.js";
+    import { listenSessions } from "./js/db.js";
+    import { buildAndDownloadExport } from "./js/export.js";
+
+    renderBottomNav("eksport");
+
+    let currentSessions = [];
+
+    requireAuth((user) => {
+      renderTopbar(document.getElementById("topbar"), user);
+      listenSessions((sessions) => {
+        currentSessions = sessions;
+      });
+    });
+
+    document.getElementById("export-btn").addEventListener("click", () => {
+      const from = document.getElementById("from-date").value || null;
+      const to = document.getElementById("to-date").value || null;
+      try {
+        if (currentSessions.length === 0) {
+          showToast("Ingen økter å eksportere ennå.", "error");
+          return;
+        }
+        const result = buildAndDownloadExport(currentSessions, { from, to });
+        showToast(`Eksportert ${result.sessionCount} økter \u{1F4E4}`, "success");
+      } catch (err) {
+        console.error(err);
+        showToast(err.message || "Eksport feilet.", "error");
+      }
+    });
+  </script>
+  <script src="js/sw-register.js"></script>
+</body>
+</html>

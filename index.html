@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Dashboard - Treningslogger</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0d1b2a" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" href="icons/favicon-32.png" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="dashboard">
+  <div class="app-shell">
+    <div id="topbar"></div>
+    <div id="card"></div>
+    <div id="stats"></div>
+    <div id="streak"></div>
+    <div id="distribution"></div>
+    <div id="badges"></div>
+    <div id="recent"></div>
+    <div class="spinner" id="spinner"></div>
+  </div>
+
+  <script type="module">
+    import { requireAuth } from "./js/auth.js";
+    import { renderTopbar, renderBottomNav } from "./js/nav.js";
+    import { listenSessions } from "./js/db.js";
+    import { computeAndRenderAll } from "./js/dashboard.js";
+
+    renderBottomNav("dashboard");
+
+    requireAuth((user) => {
+      renderTopbar(document.getElementById("topbar"), user);
+
+      const refs = {
+        card: document.getElementById("card"),
+        stats: document.getElementById("stats"),
+        streak: document.getElementById("streak"),
+        distribution: document.getElementById("distribution"),
+        badges: document.getElementById("badges"),
+        recent: document.getElementById("recent"),
+      };
+
+      listenSessions(
+        (sessions) => {
+          document.getElementById("spinner").style.display = "none";
+          computeAndRenderAll(sessions, user, refs);
+        },
+        () => {
+          document.getElementById("spinner").style.display = "none";
+        }
+      );
+    });
+  </script>
+  <script src="js/sw-register.js"></script>
+</body>
+</html>

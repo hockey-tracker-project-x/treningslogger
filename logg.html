@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Logg økt - Treningslogger</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0d1b2a" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" href="icons/favicon-32.png" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="logg">
+  <div class="app-shell">
+    <div id="topbar"></div>
+
+    <div class="section-title">
+      <h2 id="form-heading" style="text-transform:none;font-size:1.2rem;color:var(--text-primary);">Logg økt</h2>
+    </div>
+
+    <form id="logg-form" class="card">
+      <label>Dato</label>
+      <input type="date" id="date-input" required />
+
+      <div id="blocks-container"></div>
+
+      <button type="button" id="add-block-btn" class="btn btn-secondary" style="margin-bottom:16px;">+ Legg til kategori</button>
+      <button type="submit" id="save-btn" class="btn btn-primary">Lagre økt</button>
+    </form>
+
+    <p class="muted center-text" style="font-size:0.8rem;">
+      Tips: kombiner flere kategorier i samme økt - f.eks. 30 min skøytegåing + 15 min skuddtrening.
+    </p>
+  </div>
+
+  <script type="module">
+    import { requireAuth } from "./js/auth.js";
+    import { renderTopbar, renderBottomNav } from "./js/nav.js";
+    import { initLoggForm } from "./js/logg.js";
+
+    renderBottomNav("logg");
+
+    requireAuth((user) => {
+      renderTopbar(document.getElementById("topbar"), user);
+      initLoggForm(
+        {
+          formEl: document.getElementById("logg-form"),
+          blocksContainer: document.getElementById("blocks-container"),
+          addBlockBtn: document.getElementById("add-block-btn"),
+          dateInput: document.getElementById("date-input"),
+          saveBtn: document.getElementById("save-btn"),
+          headingEl: document.getElementById("form-heading"),
+        },
+        user
+      );
+    });
+  </script>
+  <script src="js/sw-register.js"></script>
+</body>
+</html>

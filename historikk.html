@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Historikk - Treningslogger</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0d1b2a" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" href="icons/favicon-32.png" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="historikk">
+  <div class="app-shell">
+    <div id="topbar"></div>
+
+    <div class="section-title">
+      <h2 style="text-transform:none;font-size:1.2rem;color:var(--text-primary);">Historikk</h2>
+    </div>
+
+    <div class="filter-row">
+      <select id="category-filter"></select>
+      <select id="person-filter"></select>
+    </div>
+
+    <div id="session-list"></div>
+    <div class="spinner" id="spinner"></div>
+  </div>
+
+  <script type="module">
+    import { requireAuth } from "./js/auth.js";
+    import { renderTopbar, renderBottomNav } from "./js/nav.js";
+    import { listenSessions } from "./js/db.js";
+    import { initHistorikk } from "./js/historikk.js";
+
+    renderBottomNav("historikk");
+
+    requireAuth((user) => {
+      renderTopbar(document.getElementById("topbar"), user);
+
+      const controller = initHistorikk({
+        listEl: document.getElementById("session-list"),
+        categoryFilter: document.getElementById("category-filter"),
+        personFilter: document.getElementById("person-filter"),
+      });
+
+      listenSessions(
+        (sessions) => {
+          document.getElementById("spinner").style.display = "none";
+          controller.setSessions(sessions);
+        },
+        () => {
+          document.getElementById("spinner").style.display = "none";
+        }
+      );
+    });
+  </script>
+  <script src="js/sw-register.js"></script>
+</body>
+</html>
