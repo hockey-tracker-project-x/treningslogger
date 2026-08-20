@@ -11,7 +11,12 @@ function todayStr() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-export function renderHockeyCard(container, stats, displayName) {
+const PLAYER_PLACEHOLDER_ICON = `<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+  <circle cx="12" cy="8" r="4"/>
+  <path d="M4 20.5c0-4.4 3.8-7 8-7s8 2.6 8 7v.3H4v-.3Z"/>
+</svg>`;
+
+export function renderHockeyCard(container, stats, player, fallbackName) {
   const skillRows = Object.entries(SKILLS)
     .map(([key, def]) => {
       const value = stats.skills[key];
@@ -26,18 +31,28 @@ export function renderHockeyCard(container, stats, displayName) {
     })
     .join("");
 
+  const name = (player && player.name) || fallbackName || "Spiller";
+  const nickname = player && player.nickname;
+  const photoDataUrl = player && player.photoDataUrl;
+
   container.innerHTML = `
     <div class="hockey-card-wrap">
       <div class="hockey-card">
         <div class="hockey-card-header">
+          <div class="hockey-card-photo">
+            ${photoDataUrl ? `<img src="${photoDataUrl}" alt="">` : `<span class="placeholder">${PLAYER_PLACEHOLDER_ICON}</span>`}
+          </div>
           <div class="hockey-card-overall">${stats.overall}<small>OVERALL</small></div>
           <div class="hockey-card-name">
-            <div class="name">${displayName || "Spiller"}</div>
-            <div class="role">Hockeykort</div>
+            <div class="name">${name}</div>
+            <div class="role">${nickname ? `«${nickname}»` : "Hockeykort"}</div>
           </div>
         </div>
         <div class="skill-list">${skillRows}</div>
       </div>
+    </div>
+    <div class="hockey-card-edit-link">
+      <a href="profil.html" class="btn btn-ghost btn-sm">✏️ Rediger profil</a>
     </div>
   `;
 }
@@ -155,9 +170,10 @@ export function formatDateNo(dateStr) {
   return date.toLocaleDateString("nb-NO", { weekday: "short", day: "numeric", month: "short" });
 }
 
-export function computeAndRenderAll(sessions, user, refs) {
+export function computeAndRenderAll(sessions, user, refs, player) {
   const stats = calcStats(sessions, todayStr());
-  renderHockeyCard(refs.card, stats, (user.displayName || "").split(" ")[0]);
+  const fallbackName = (user.displayName || "").split(" ")[0];
+  renderHockeyCard(refs.card, stats, player, fallbackName);
   renderStatGrid(refs.stats, stats);
   renderStreak(refs.streak, stats);
   renderDistribution(refs.distribution, stats);

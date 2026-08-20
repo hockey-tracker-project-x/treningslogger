@@ -25,7 +25,7 @@
   <script type="module">
     import { requireAuth } from "./js/auth.js";
     import { renderTopbar, renderBottomNav } from "./js/nav.js";
-    import { listenSessions } from "./js/db.js";
+    import { listenSessions, listenPlayerProfile } from "./js/db.js";
     import { computeAndRenderAll } from "./js/dashboard.js";
 
     renderBottomNav("dashboard");
@@ -42,15 +42,29 @@
         recent: document.getElementById("recent"),
       };
 
+      let latestSessions = null;
+      let latestPlayer = null;
+
+      function tryRender() {
+        if (latestSessions === null) return;
+        computeAndRenderAll(latestSessions, user, refs, latestPlayer);
+      }
+
       listenSessions(
         (sessions) => {
           document.getElementById("spinner").style.display = "none";
-          computeAndRenderAll(sessions, user, refs);
+          latestSessions = sessions;
+          tryRender();
         },
         () => {
           document.getElementById("spinner").style.display = "none";
         }
       );
+
+      listenPlayerProfile((player) => {
+        latestPlayer = player;
+        tryRender();
+      });
     });
   </script>
   <script src="js/sw-register.js"></script>

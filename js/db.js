@@ -28,6 +28,8 @@ enableIndexedDbPersistence(db).catch((err) => {
 
 const SESSIONS = "sessions";
 const USERS = "users";
+const META = "meta";
+const PLAYER_DOC_ID = "player";
 
 export function sumBlocks(blocks) {
   return (blocks || []).reduce((sum, b) => sum + (Number(b.minutes) || 0), 0);
@@ -104,6 +106,41 @@ export function listenSessions(callback, onError) {
       if (onError) onError(err);
     }
   );
+}
+
+// ---------- Delt spillerprofil (utøvernavn, kallenavn, bilde til hockeykortet) ----------
+// Lagres i ett enkelt, delt dokument (meta/player) - begge kontoer leser/skriver samme profil.
+
+export async function getPlayerProfile() {
+  const snap = await getDoc(doc(db, META, PLAYER_DOC_ID));
+  return snap.exists() ? snap.data() : null;
+}
+
+// Lytter i sanntid på spillerprofilen. Returnerer en "unsubscribe"-funksjon.
+export function listenPlayerProfile(callback, onError) {
+  const ref = doc(db, META, PLAYER_DOC_ID);
+  return onSnapshot(
+    ref,
+    (snap) => callback(snap.exists() ? snap.data() : null),
+    (err) => {
+      console.error("Feil ved lytting på spillerprofil:", err);
+      if (onError) onError(err);
+    }
+  );
+}
+
+// photoDataUrl: send med en tom streng "" for å fjerne bildet, eller utelat
+// feltet helt for å la et eksisterende bilde stå urørt.
+export async function savePlayerProfile({ name, nickname, photoDataUrl }) {
+  const payload = {
+    name: (name || "").trim(),
+    nickname: (nickname || "").trim(),
+    updatedAt: serverTimestamp(),
+  };
+  if (photoDataUrl !== undefined) {
+    payload.photoDataUrl = photoDataUrl;
+  }
+  return setDoc(doc(db, META, PLAYER_DOC_ID), payload, { merge: true });
 }
 
 export async function upsertUserProfile(user) {
