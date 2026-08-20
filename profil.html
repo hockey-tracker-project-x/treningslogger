@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Rediger profil - Treningslogger</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0d1b2a" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" href="icons/favicon-32.png" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="profil">
+  <div class="app-shell">
+    <div id="topbar"></div>
+
+    <div class="card">
+      <h2>Utøverprofil</h2>
+      <p class="muted" style="margin-bottom:18px; font-size:0.85rem;">
+        Dette vises på hockeykortet på dashbordet. Navn og bilde er felles for begge kontoer.
+      </p>
+
+      <form id="profil-form">
+        <div class="profile-photo-picker">
+          <div class="profile-photo-preview" id="photo-preview"></div>
+          <div class="profile-photo-actions">
+            <label class="btn btn-secondary btn-sm" for="photo-input">📷 Velg bilde</label>
+            <input type="file" id="photo-input" accept="image/*" />
+            <button type="button" class="btn btn-ghost btn-sm" id="remove-photo-btn">Fjern bilde</button>
+          </div>
+        </div>
+
+        <label for="name-input">Utøvernavn</label>
+        <input type="text" id="name-input" placeholder="F.eks. Fredrik Nyland" maxlength="60" />
+
+        <label for="nickname-input">Kallenavn (valgfritt, vises som sekundært navn på kortet)</label>
+        <input type="text" id="nickname-input" placeholder="F.eks. Freddy" maxlength="30" />
+
+        <button type="submit" class="btn btn-primary" id="save-btn" style="margin-top:6px;">Lagre profil</button>
+      </form>
+    </div>
+
+    <a href="index.html" class="btn btn-ghost">← Tilbake til dashbord</a>
+  </div>
+
+  <script type="module">
+    import { requireAuth } from "./js/auth.js";
+    import { renderTopbar, renderBottomNav } from "./js/nav.js";
+    import { initProfilForm } from "./js/profil.js";
+
+    renderBottomNav("dashboard");
+
+    requireAuth((user) => {
+      renderTopbar(document.getElementById("topbar"), user);
+
+      initProfilForm({
+        form: document.getElementById("profil-form"),
+        nameInput: document.getElementById("name-input"),
+        nicknameInput: document.getElementById("nickname-input"),
+        photoPreview: document.getElementById("photo-preview"),
+        photoInput: document.getElementById("photo-input"),
+        removePhotoBtn: document.getElementById("remove-photo-btn"),
+        saveBtn: document.getElementById("save-btn"),
+      });
+    });
+  </script>
+  <script src="js/sw-register.js"></script>
+</body>
+</html>

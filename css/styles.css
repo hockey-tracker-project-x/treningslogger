@@ -274,20 +274,40 @@ input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1p
   pointer-events: none;
 }
 .hockey-card-header {
-  display: flex; justify-content: space-between; align-items: flex-start;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 10px;
   margin-bottom: 10px; position: relative;
 }
+.hockey-card-photo {
+  width: 46px; height: 46px; border-radius: 50%;
+  flex-shrink: 0;
+  background: rgba(28,34,48,0.14);
+  border: 2px solid rgba(28,34,48,0.3);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.hockey-card-photo img { width: 100%; height: 100%; object-fit: cover; }
+.hockey-card-photo .placeholder { color: #7c6733; display: flex; }
 .hockey-card-overall {
   font-size: 2.6rem; font-weight: 800; line-height: 1;
 }
 .hockey-card-overall small { display: block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; color: #5c4a1c; }
-.hockey-card-name { text-align: right; }
-.hockey-card-name .name { font-weight: 800; font-size: 1.05rem; }
-.hockey-card-name .role { font-size: 0.7rem; color: #5c4a1c; text-transform: uppercase; letter-spacing: 0.05em; }
+.hockey-card-name { text-align: right; flex: 1; min-width: 0; }
+.hockey-card-name .name {
+  font-weight: 800; font-size: 1.05rem;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.hockey-card-name .role {
+  font-size: 0.7rem; color: #5c4a1c; letter-spacing: 0.02em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.hockey-card-edit-link { display: flex; justify-content: center; margin-bottom: 16px; }
+.hockey-card-edit-link .btn { width: auto; }
 
 .skill-list { position: relative; display: flex; flex-direction: column; gap: 8px; }
 .skill-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; }
-.skill-row .skill-icon { width: 20px; text-align: center; }
+.skill-row .skill-icon { width: 20px; text-align: center; display: inline-flex; align-items: center; justify-content: center; color: #4a3a12; }
+.skill-row .skill-icon svg { display: block; }
 .skill-row .skill-label { flex: 0 0 108px; font-weight: 600; color: #33291090; color: #4a3a12; }
 .skill-row .skill-track {
   flex: 1; height: 8px; background: rgba(28,34,48,0.18); border-radius: 6px; overflow: hidden;
@@ -495,3 +515,22 @@ input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1p
 .streak-line { display: flex; align-items: center; gap: 10px; font-size: 1.6rem; font-weight: 800; }
 .streak-line .flame { font-size: 1.6rem; }
 .streak-line small { display: block; font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+
+/* ---------- Profil-side (bilde / navn / kallenavn) ---------- */
+.profile-photo-picker {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  margin-bottom: 20px;
+}
+.profile-photo-preview {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: var(--surface-2);
+  border: 2px solid var(--border);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.profile-photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+.profile-photo-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.profile-photo-actions .btn { width: auto; }
+.profile-photo-actions input[type="file"] { display: none; }
