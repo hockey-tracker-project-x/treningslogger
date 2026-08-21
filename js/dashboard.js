@@ -23,7 +23,10 @@ export function renderHockeyCard(container, stats, player, fallbackName) {
       const pct = Math.round(((value - 10) / (99 - 10)) * 100);
       return `
       <div class="skill-row">
-        <span class="skill-icon">${def.icon}</span>
+        <span class="skill-icon">
+          <img class="icon-ice" src="${def.iconIce}" alt="" />
+          <img class="icon-ms" src="${def.iconMs}" alt="" />
+        </span>
         <span class="skill-label">${def.label}</span>
         <span class="skill-track"><span class="skill-fill" style="width:${Math.max(pct, 3)}%"></span></span>
         <span class="skill-value">${value}</span>

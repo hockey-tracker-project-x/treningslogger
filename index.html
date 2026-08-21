@@ -5,10 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Dashboard - Treningslogger</title>
 <link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#0d1b2a" />
+<meta name="theme-color" content="#101923" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="icon" href="icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/styles.css" />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("tl-theme");
+      document.documentElement.setAttribute("data-theme", t === "manglerud" ? "manglerud" : "ice");
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body data-page="dashboard">
   <div class="app-shell">
@@ -27,11 +38,13 @@
     import { renderTopbar, renderBottomNav } from "./js/nav.js";
     import { listenSessions, listenPlayerProfile } from "./js/db.js";
     import { computeAndRenderAll } from "./js/dashboard.js";
+    import { watchSharedTheme } from "./js/theme.js";
 
     renderBottomNav("dashboard");
 
     requireAuth((user) => {
       renderTopbar(document.getElementById("topbar"), user);
+      watchSharedTheme();
 
       const refs = {
         card: document.getElementById("card"),

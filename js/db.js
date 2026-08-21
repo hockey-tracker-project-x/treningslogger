@@ -143,6 +143,12 @@ export async function savePlayerProfile({ name, nickname, photoDataUrl }) {
   return setDoc(doc(db, META, PLAYER_DOC_ID), payload, { merge: true });
 }
 
+// Lagrer valgt fargetema ("ice" | "manglerud") delt for alle kontoer, uten å
+// røre navn/kallenavn/bilde i samme dokument.
+export async function saveTheme(theme) {
+  return setDoc(doc(db, META, PLAYER_DOC_ID), { theme, updatedAt: serverTimestamp() }, { merge: true });
+}
+
 export async function upsertUserProfile(user) {
   try {
     const ref = doc(db, USERS, user.uid);

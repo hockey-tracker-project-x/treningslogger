@@ -5,10 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Rediger profil - Treningslogger</title>
 <link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#0d1b2a" />
+<meta name="theme-color" content="#101923" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="icon" href="icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/styles.css" />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("tl-theme");
+      document.documentElement.setAttribute("data-theme", t === "manglerud" ? "manglerud" : "ice");
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body data-page="profil">
   <div class="app-shell">
@@ -40,18 +51,37 @@
       </form>
     </div>
 
+    <div class="card">
+      <h2>Fargetema</h2>
+      <p class="muted" style="margin-bottom:14px; font-size:0.85rem;">
+        Velg utseende for appen. Gjelder for alle kontoer, og lagres med en gang.
+      </p>
+      <div class="theme-picker" id="theme-picker">
+        <button type="button" class="theme-option" data-theme-choice="ice">
+          <span class="theme-swatch theme-swatch-ice"></span>
+          Isblå
+        </button>
+        <button type="button" class="theme-option" data-theme-choice="manglerud">
+          <span class="theme-swatch theme-swatch-manglerud"></span>
+          Manglerud Star
+        </button>
+      </div>
+    </div>
+
     <a href="index.html" class="btn btn-ghost">← Tilbake til dashbord</a>
   </div>
 
   <script type="module">
     import { requireAuth } from "./js/auth.js";
     import { renderTopbar, renderBottomNav } from "./js/nav.js";
-    import { initProfilForm } from "./js/profil.js";
+    import { initProfilForm, initThemePicker } from "./js/profil.js";
+    import { watchSharedTheme } from "./js/theme.js";
 
     renderBottomNav("dashboard");
 
     requireAuth((user) => {
       renderTopbar(document.getElementById("topbar"), user);
+      watchSharedTheme();
 
       initProfilForm({
         form: document.getElementById("profil-form"),
@@ -62,6 +92,8 @@
         removePhotoBtn: document.getElementById("remove-photo-btn"),
         saveBtn: document.getElementById("save-btn"),
       });
+
+      initThemePicker(document.getElementById("theme-picker"));
     });
   </script>
   <script src="js/sw-register.js"></script>

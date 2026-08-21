@@ -8,21 +8,20 @@ export const HOURS_FOR_MAX = 5000;
 export const MIN_SKILL = 10;
 export const MAX_SKILL = 99;
 
-// Enkelt SVG-ikon av en hockeysko (rett blad, ingen tå-tagg) - brukes i stedet
-// for et emoji, siden det ikke finnes noe hockeysko-emoji (kun kunstløp ⛸️).
-const HOCKEY_SKATE_ICON = `<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
-  <path d="M8.6 5.2c0-.9.7-1.6 1.6-1.6h3c1 0 1.9.6 2.3 1.5l2.2 4.9c.2.5.7.8 1.3.8h1.6c1 0 1.9.7 2.1 1.7l.3 1.4c.2 1-.5 1.9-1.5 2l-16 1.6c-1 .1-1.9-.6-2-1.6l-.1-1c-.1-.9.5-1.7 1.4-1.9l3.1-.7c.4-.1.7-.5.7-.9V5.2Z"/>
-  <rect x="1.6" y="16.6" width="20" height="1.7" rx="0.85"/>
-</svg>`;
+// Hver skill har to sett med ikoner (PNG) - ett for isblå-temaet og ett for
+// Manglerud Star-temaet. Riktig sett vises automatisk via CSS (se
+// ".skill-icon img.icon-*" i styles.css) basert på data-theme på <html>.
+const ICON_BASE_ICE = "icons/Skills/01_isbla_standard";
+const ICON_BASE_MS = "icons/Skills/02_manglerud_star";
 
 // De 6 hockey-skillsene. "colorVar" peker på en CSS-variabel definert i styles.css.
 export const SKILLS = {
-  fysikk:   { label: "Fysikk",              icon: "\u{1F4AA}", colorVar: "--cat-barmark" },
-  skoyte:   { label: "Skøyteferdigheter",   icon: HOCKEY_SKATE_ICON, colorVar: "--cat-skoyting" },
-  iq:       { label: "Hockey IQ",            icon: "\u{1F9E0}", colorVar: "--cat-spilldrill" },
-  hender:   { label: "Soft Hands",           icon: "\u{1F3D2}", colorVar: "--cat-kolleteknikk" },
-  robust:   { label: "Robust",               icon: "\u{1F6E1}️", colorVar: "--cat-rehab" },
-  skudd:    { label: "Skudd",                icon: "\u{1F3AF}", colorVar: "--cat-skudd" },
+  fysikk:   { label: "Fysikk",            iconIce: `${ICON_BASE_ICE}/05_dumbbell.png`,      iconMs: `${ICON_BASE_MS}/05_dumbbell.png`,      colorVar: "--cat-barmark" },
+  skoyte:   { label: "Skøyteferdigheter", iconIce: `${ICON_BASE_ICE}/06_hockey_skate.png`,  iconMs: `${ICON_BASE_MS}/06_hockey_skate.png`,  colorVar: "--cat-skoyting" },
+  iq:       { label: "Hockey IQ",         iconIce: `${ICON_BASE_ICE}/04_hockey_iq.png`,     iconMs: `${ICON_BASE_MS}/04_hockey_iq.png`,     colorVar: "--cat-spilldrill" },
+  hender:   { label: "Soft Hands",        iconIce: `${ICON_BASE_ICE}/01_hockey_glove.png`,  iconMs: `${ICON_BASE_MS}/01_hockey_glove.png`,  colorVar: "--cat-kolleteknikk" },
+  robust:   { label: "Robust",            iconIce: `${ICON_BASE_ICE}/02_hockey_shield.png`, iconMs: `${ICON_BASE_MS}/02_hockey_shield.png`, colorVar: "--cat-rehab" },
+  skudd:    { label: "Skudd",             iconIce: `${ICON_BASE_ICE}/03_hockey_goal.png`,   iconMs: `${ICON_BASE_MS}/03_hockey_goal.png`,   colorVar: "--cat-skudd" },
 };
 
 // Kategorier som kan velges når man logger en økt.

@@ -1,7 +1,7 @@
 // Enkel service worker: cacher app-skallet slik at appen kan installeres og
 // åpnes offline. Treningsdata i seg selv går via Firestores egen offline-cache
 // (se enableIndexedDbPersistence i js/db.js) - denne filen cacher kun UI-filene.
-const CACHE_NAME = "treningslogger-v2";
+const CACHE_NAME = "treningslogger-v3";
 
 const ASSETS = [
   "./",
@@ -20,6 +20,7 @@ const ASSETS = [
   "js/db.js",
   "js/skills.js",
   "js/nav.js",
+  "js/theme.js",
   "js/dashboard.js",
   "js/logg.js",
   "js/historikk.js",
@@ -30,6 +31,18 @@ const ASSETS = [
   "icons/icon-512.png",
   "icons/apple-touch-icon.png",
   "icons/favicon-32.png",
+  "icons/Skills/01_isbla_standard/01_hockey_glove.png",
+  "icons/Skills/01_isbla_standard/02_hockey_shield.png",
+  "icons/Skills/01_isbla_standard/03_hockey_goal.png",
+  "icons/Skills/01_isbla_standard/04_hockey_iq.png",
+  "icons/Skills/01_isbla_standard/05_dumbbell.png",
+  "icons/Skills/01_isbla_standard/06_hockey_skate.png",
+  "icons/Skills/02_manglerud_star/01_hockey_glove.png",
+  "icons/Skills/02_manglerud_star/02_hockey_shield.png",
+  "icons/Skills/02_manglerud_star/03_hockey_goal.png",
+  "icons/Skills/02_manglerud_star/04_hockey_iq.png",
+  "icons/Skills/02_manglerud_star/05_dumbbell.png",
+  "icons/Skills/02_manglerud_star/06_hockey_skate.png",
 ];
 
 self.addEventListener("install", (event) => {
