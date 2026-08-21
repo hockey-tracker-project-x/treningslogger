@@ -1,7 +1,7 @@
 // Enkel service worker: cacher app-skallet slik at appen kan installeres og
 // åpnes offline. Treningsdata i seg selv går via Firestores egen offline-cache
 // (se enableIndexedDbPersistence i js/db.js) - denne filen cacher kun UI-filene.
-const CACHE_NAME = "treningslogger-v3";
+const CACHE_NAME = "treningslogger-v4";
 
 const ASSETS = [
   "./",
