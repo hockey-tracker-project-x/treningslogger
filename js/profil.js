@@ -5,6 +5,7 @@
 
 import { getPlayerProfile, savePlayerProfile } from "./db.js";
 import { showToast } from "./nav.js";
+import { applyTheme, setSharedTheme, DEFAULT_THEME } from "./theme.js";
 
 const MAX_DATA_URL_LENGTH = 700_000; // ~700 KB som data-URL, trygt under Firestores 1 MB-grense per dokument
 
@@ -140,4 +141,36 @@ export function initProfilForm({
   });
 
   load();
+}
+
+// Tema-velger (isblå / Manglerud Star) på profilsiden. Uavhengig av
+// profil-skjemaet over, siden temaet lagres separat (samme delte dokument,
+// men eget felt) og skal oppdateres med en gang - uten å måtte trykke "Lagre".
+export function initThemePicker(container) {
+  const buttons = Array.from(container.querySelectorAll("[data-theme-choice]"));
+
+  function setActive(theme) {
+    buttons.forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.themeChoice === theme);
+    });
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const theme = btn.dataset.themeChoice;
+      setActive(theme);
+      applyTheme(theme); // umiddelbar visuell tilbakemelding
+      try {
+        await setSharedTheme(theme);
+        showToast("Tema oppdatert \u{1F3D2}", "success");
+      } catch (err) {
+        console.error(err);
+        showToast("Kunne ikke lagre temavalget.", "error");
+      }
+    });
+  });
+
+  getPlayerProfile()
+    .then((profile) => setActive((profile && profile.theme) || DEFAULT_THEME))
+    .catch(() => setActive(DEFAULT_THEME));
 }
