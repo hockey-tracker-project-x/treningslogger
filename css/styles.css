@@ -307,15 +307,6 @@ input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1p
   background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 6px);
   pointer-events: none;
 }
-/* Diagonal aksentstripe i hjørnet */
-.hockey-card::after {
-  content: "";
-  position: absolute; top: 0; right: 0;
-  width: 120px; height: 120px;
-  background: linear-gradient(135deg, transparent 48%, var(--accent) 49%, var(--accent) 58%, transparent 59%);
-  opacity: 0.85;
-  pointer-events: none;
-}
 .hockey-card-header {
   display: flex; justify-content: space-between; align-items: center;
   gap: 12px;
