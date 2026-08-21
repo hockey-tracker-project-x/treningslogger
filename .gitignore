@@ -1,3 +1,6 @@
 .DS_Store
 Thumbs.db
 *.log
+
+# Private prosjektnotater - kun til eget bruk, skal aldri deles/pushes
+CLAUDE.md
